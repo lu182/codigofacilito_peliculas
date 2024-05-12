@@ -21,7 +21,7 @@ public class ActorService implements IActorService {
 		return (List<Actor>) iActorRepository.findAll(); //casteamos
 	}	
 
-	@Override
+	//@Override
 	public List<Actor> findAllActoresById(List<Long> ids) {
 		return (List<Actor>) iActorRepository.findAllById(ids); //casteamos
 	}
