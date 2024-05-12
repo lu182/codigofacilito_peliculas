@@ -29,9 +29,14 @@ public class Pelicula implements Serializable{
 	@Temporal(TemporalType.DATE) //para que guarde solamente la fecha sin la hora
 	private Date fechaEstreno;	
 	
-	private Genero generoPelicula;	
-	private List<Actor> protagonistas;
+	private Genero generoPelicula;
 	
+	//private List<Actor> protagonistas; 1 Pelicula tiene muchos protgonistas
+	
+	
+	public Pelicula() {
+		
+	}
 	
 	
 	public Long getIdPelicula() {
@@ -58,14 +63,12 @@ public class Pelicula implements Serializable{
 	public void setGeneroPelicula(Genero generoPelicula) {
 		this.generoPelicula = generoPelicula;
 	}
-	public List<Actor> getProtagonistas() {
+	/*public List<Actor> getProtagonistas() {
 		return protagonistas;
 	}
 	public void setProtagonistas(List<Actor> protagonistas) {
 		this.protagonistas = protagonistas;
-	}
-	
-	
-	
+	}*/
+
 
 }

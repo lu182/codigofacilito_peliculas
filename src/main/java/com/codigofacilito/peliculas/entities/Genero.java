@@ -19,6 +19,12 @@ public class Genero implements Serializable{
 	private Long idGenero;
 	
 	private String nombreGenero;
+	
+	
+
+	public Genero() {
+		
+	}
 
 	public Long getIdGenero() {
 		return idGenero;
@@ -35,8 +41,5 @@ public class Genero implements Serializable{
 	public void setNombreGenero(String nombreGenero) {
 		this.nombreGenero = nombreGenero;
 	}
-	
-	
-	
-	
+
 }
