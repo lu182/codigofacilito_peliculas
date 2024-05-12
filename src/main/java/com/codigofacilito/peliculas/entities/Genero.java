@@ -2,6 +2,7 @@ package com.codigofacilito.peliculas.entities;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +17,10 @@ public class Genero implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long idGenero;
 	
+	@Column(name = "nombre")
 	private String nombreGenero;
 	
 	
