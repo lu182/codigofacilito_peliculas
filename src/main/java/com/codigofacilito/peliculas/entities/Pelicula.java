@@ -2,6 +2,7 @@ package com.codigofacilito.peliculas.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -37,7 +39,8 @@ public class Pelicula implements Serializable{
 	@OneToOne //1 Pelicula va a tener 1 Género
 	private Genero generoPelicula;
 	
-	//private List<Actor> protagonistas; 1 Pelicula tiene muchos protgonistas
+	@ManyToMany
+	private List<Actor> protagonistas; //1 Pelicula tiene muchos protagonistas/actores y a su vez esos actores pueden estar en muchas peliculas
 	
 	
 	public Pelicula() {
@@ -69,12 +72,12 @@ public class Pelicula implements Serializable{
 	public void setGeneroPelicula(Genero generoPelicula) {
 		this.generoPelicula = generoPelicula;
 	}
-	/*public List<Actor> getProtagonistas() {
+	public List<Actor> getProtagonistas() {
 		return protagonistas;
 	}
 	public void setProtagonistas(List<Actor> protagonistas) {
 		this.protagonistas = protagonistas;
-	}*/
+	}
 
 
 }
