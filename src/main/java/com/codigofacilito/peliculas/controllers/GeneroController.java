@@ -14,7 +14,7 @@ public class GeneroController {
 	
 	private IGeneroService iGeneroService;
 	
-	public GeneroController(IGeneroService iGeneroService) {
+	public GeneroController(IGeneroService iGeneroService) { //inyectamos
 		this.iGeneroService = iGeneroService;
 	}
 	
