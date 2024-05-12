@@ -17,8 +17,10 @@ public class Actor implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long idActor;
 	
+	@Column(name = "nombre")
 	private String nombreActor;
 	
 	@Column(name = "url_imagen")
