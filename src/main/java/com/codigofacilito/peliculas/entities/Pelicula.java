@@ -16,6 +16,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "peliculas")
@@ -28,14 +30,17 @@ public class Pelicula implements Serializable{
 	@Column(name = "id")
 	private Long idPelicula;
 	
+	@NotEmpty(message="El nombre no debe estar vacío") //que no sea nulo ni vacío
 	@Column(name = "nombre")
 	private String nombrePelicula;
 	
 	@Column(name = "fecha_estreno")
 	@Temporal(TemporalType.DATE) //para que guarde solamente la fecha sin la hora
 	@DateTimeFormat(pattern="yyyy-MM-dd") //definimos el formato con el que vamos a guardar la fecha en bd.
+	@NotNull(message="El campo fecha de estreno no debe estar vacío")
 	private Date fechaEstreno;		
 	
+	@NotNull()
 	@OneToOne //1 Pelicula va a tener 1 Género
 	private Genero generoPelicula;
 	

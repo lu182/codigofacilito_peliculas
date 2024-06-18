@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,8 @@ import com.codigofacilito.peliculas.entities.Pelicula;
 import com.codigofacilito.peliculas.services.IActorService;
 import com.codigofacilito.peliculas.services.IGeneroService;
 import com.codigofacilito.peliculas.services.IPeliculaService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class PeliculaController {
@@ -63,7 +66,14 @@ private IActorService iActorService;
 	}
 	
 	@PostMapping("/pelicula") //botón guardar del form
-	public String guardar(Pelicula pelicula, @ModelAttribute(name = "ids") String ids) {
+	public String guardar(@Valid Pelicula pelicula, BindingResult br , @ModelAttribute(name = "ids") String ids, Model model) {
+		
+		//Al momento de guardar preguntamos si el formulario tuvo algún error. Si hubo, enviamos nuevamente el form
+		if(br.hasErrors()) {
+			model.addAttribute("generos", iGeneroService.findAllGeneros()); 			
+			model.addAttribute("actores", iActorService.findAllActores());
+			return "pelicula"; //va a retornar la vista -> pelicula.html
+		}
 		
 		//creamos lista de tipo Long de idsProtagonistas separados por comas
 		if (!ids.isEmpty()) {
