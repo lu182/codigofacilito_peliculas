@@ -92,8 +92,13 @@ private IActorService iActorService;
 	}
 	
 	@GetMapping({"/", "/home", "/index"}) //Estas 3 opciones nos van a mandar a nuestro home.html
-	public String home() {
-		return "home"; //nombre de la vista que va a retornar este método-> templates-> home.html
+	public String home(Model model) {
+		//header.html -> <div th:if="${msj != null}" th:text="${msj}" th:class="${tipoMsj != null ? 'alert alert-' + tipoMsj : 'alert'}">
+		//Al presionar Catálogo en navbar:
+		model.addAttribute("msj", "Catálogo actualizado a 2024");
+		model.addAttribute("tipoMsj", "success"); //success -> clase bootstrap
+		
+		return "home"; //Vista que devolverá -> templates-> home.html
 	}
 
 }
