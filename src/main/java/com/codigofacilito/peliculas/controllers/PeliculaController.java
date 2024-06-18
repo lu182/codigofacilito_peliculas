@@ -66,13 +66,15 @@ private IActorService iActorService;
 	public String guardar(Pelicula pelicula, @ModelAttribute(name = "ids") String ids) {
 		
 		//creamos lista de tipo Long de idsProtagonistas separados por comas
-		List<Long> idsProtagonistas = 
-				Arrays.stream(ids.split(","))
-				.map(Long::parseLong)
-				.collect(Collectors.toList());
-		//Le pasamos esa lista al servicio. Esto es p/saber todos los ids de actores que tendrá esa pelicula
-		List<Actor> protagonistas = iActorService.findAllActoresById(idsProtagonistas);
-		pelicula.setProtagonistas(protagonistas);
+		if (!ids.isEmpty()) {
+			List<Long> idsProtagonistas = 
+					Arrays.stream(ids.split(",")) //de esa lista de ids de tipo String, separame los ids por comas
+					.map(Long::parseLong) //a ese resultado lo mapeamos utilizando la clase Long y lo parseamos a Long
+					.collect(Collectors.toList()); //por último, lo convertimos a lista.
+			//Le pasamos esa lista al servicio. Esto es p/saber todos los ids de actores que tendrá esa pelicula
+			List<Actor> protagonistas = iActorService.findAllActoresById(idsProtagonistas);
+			pelicula.setProtagonistas(protagonistas);
+		}		
 		
 		iPeliculaService.save(pelicula); //Guardamos la pelicula en la BD		
 		
