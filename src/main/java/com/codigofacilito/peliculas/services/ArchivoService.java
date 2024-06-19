@@ -20,7 +20,9 @@ public class ArchivoService implements IArchivoService {
 	//@Override
 	public void guardar(String archivo, InputStream bytes) {
 		try {
-			Files.copy(bytes, resolvePath(archivo));
+			eliminar(archivo); //elimina el archivo/imagen si ya existe con el mismo nombre
+			
+			Files.copy(bytes, resolvePath(archivo)); //guarda el archivo
 		
 		} catch (IOException e) {			
 			e.printStackTrace();
@@ -47,9 +49,20 @@ public class ArchivoService implements IArchivoService {
 				.body(resource);
 	}
 	
+	//@Override
+	public void eliminar(String archivo) {
+		
+		try {
+			Files.deleteIfExists(resolvePath(archivo));
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}
+		
+	}
+	
 	//Método privado:
 	private Path resolvePath(String archivo) {
 		return Paths.get("archivos").resolve(archivo).toAbsolutePath(); //nombre de la carpeta que creamos
-	}
+	}	
 
 }

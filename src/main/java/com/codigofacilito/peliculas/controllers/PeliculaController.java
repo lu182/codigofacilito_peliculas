@@ -73,7 +73,7 @@ private IArchivoService iArchivoService;
 	
 	@PostMapping("/pelicula") //botón guardar del form
 	public String guardar(@Valid Pelicula pelicula, BindingResult br , @ModelAttribute(name = "ids") String ids, 
-			Model model, @RequestParam("imagen") MultipartFile imagen) {
+			Model model, @RequestParam("archivo") MultipartFile imagen) {
 		
 		//Al momento de guardar preguntamos si el formulario tuvo algún error. Si hubo, enviamos nuevamente el form
 		if(br.hasErrors()) {
