@@ -10,7 +10,26 @@
 
 	</header>
 	<div class="container">
-		<h2>Soy home desde home.html</h2>
+		<div class="row row-cols-1 row-cols-md-6 g-4">
+			<div class="col" th:each="pelicula : ${peliculas}">
+				<div class="card">
+					<img src="https://m.media-amazon.com/images/I/A1PY0Z2UoVL._UC256,256_CACC,256,256_.jpg">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${pelicula.nombrePelicula}"></h5>
+						<p class="card-text" th:text="${pelicula.generoPelicula.nombreGenero}"></p>
+						<div class="catalogo-actor-container" th:each="protagonista : ${protagonistas}">
+							<div class="catalogo-actor-imagen"
+								th:style="'background:url(' + @{protagonista.urlImagen} + ')'">
+
+							</div>
+							<div class="catalogo-actor-texto" th:text="${protagonista.nombreActor}">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 

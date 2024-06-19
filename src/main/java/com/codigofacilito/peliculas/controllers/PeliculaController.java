@@ -91,14 +91,18 @@ private IActorService iActorService;
 		return "redirect:home"; //cuando con el form realicemos el save, vamos a redirigirlo al home.html
 	}
 	
-	@GetMapping({"/", "/home", "/index"}) //Estas 3 opciones nos van a mandar a nuestro home.html
+	@GetMapping({"/", "/home", "/index"}) //Estas 3 opciones nos van a mandar a nuestro home.html donde estará el Catálogo
 	public String home(Model model) {
+		
+		//Añadimos/traemos las peliculas
+		model.addAttribute("peliculas", iPeliculaService.findAllPeliculas());
+		
 		//header.html -> <div th:if="${msj != null}" th:text="${msj}" th:class="${tipoMsj != null ? 'alert alert-' + tipoMsj : 'alert'}">
 		//Al presionar Catálogo en navbar:
 		model.addAttribute("msj", "Catálogo actualizado a 2024");
 		model.addAttribute("tipoMsj", "success"); //success -> clase bootstrap
 		
 		return "home"; //Vista que devolverá -> templates-> home.html
-	}
+	}	
 
 }
