@@ -1,5 +1,6 @@
 package com.codigofacilito.peliculas.controllers;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.codigofacilito.peliculas.entities.Actor;
 import com.codigofacilito.peliculas.entities.Pelicula;
 import com.codigofacilito.peliculas.services.IActorService;
+import com.codigofacilito.peliculas.services.IArchivoService;
 import com.codigofacilito.peliculas.services.IGeneroService;
 import com.codigofacilito.peliculas.services.IPeliculaService;
 
@@ -26,13 +30,15 @@ public class PeliculaController {
 private IPeliculaService iPeliculaService;
 private IGeneroService iGeneroService;
 private IActorService iActorService;
+private IArchivoService iArchivoService;
 	
 	public PeliculaController(IPeliculaService iPeliculaService, IGeneroService iGeneroService, 
-			IActorService iActorService) { //inyectamos los servicios en el constructor
+			IActorService iActorService, IArchivoService iArchivoService) { //inyectamos los servicios en el constructor
 		
 		this.iPeliculaService = iPeliculaService;
 		this.iGeneroService = iGeneroService;
 		this.iActorService = iActorService;
+		this.iArchivoService = iArchivoService;
 	}
 	
 	
@@ -66,13 +72,24 @@ private IActorService iActorService;
 	}
 	
 	@PostMapping("/pelicula") //botón guardar del form
-	public String guardar(@Valid Pelicula pelicula, BindingResult br , @ModelAttribute(name = "ids") String ids, Model model) {
+	public String guardar(@Valid Pelicula pelicula, BindingResult br , @ModelAttribute(name = "ids") String ids, 
+			Model model, @RequestParam("imagen") MultipartFile imagen) {
 		
 		//Al momento de guardar preguntamos si el formulario tuvo algún error. Si hubo, enviamos nuevamente el form
 		if(br.hasErrors()) {
 			model.addAttribute("generos", iGeneroService.findAllGeneros()); 			
 			model.addAttribute("actores", iActorService.findAllActores());
 			return "pelicula"; //va a retornar la vista -> pelicula.html
+		}
+		
+		//Para saber si recibimos una imagen
+		if(!imagen.isEmpty()) { //si no viene vacío, guardamos la imagen
+			String archivo = pelicula.getNombrePelicula() + getExtension(imagen.getOriginalFilename()); //y lo concatenamos con la extensión
+			try {
+				iArchivoService.guardar(archivo, imagen.getInputStream());
+			} catch (IOException e) {				
+				e.printStackTrace();
+			} 
 		}
 		
 		//creamos lista de tipo Long de idsProtagonistas separados por comas
@@ -88,8 +105,16 @@ private IActorService iActorService;
 		
 		iPeliculaService.save(pelicula); //Guardamos la pelicula en la BD		
 		
-		return "redirect:home"; //cuando con el form realicemos el save, vamos a redirigirlo al home.html
+		return "redirect:home"; //cuando con el form realicemos el save, vamos a redirigirlo al home.html		
+		
 	}
+	
+	
+	//Método privado:
+	private String getExtension(String archivo) {
+		return archivo.substring(archivo.lastIndexOf("."));
+	}
+	
 	
 	@GetMapping({"/", "/home", "/index"}) //Estas 3 opciones nos van a mandar a nuestro home.html donde estará el Catálogo
 	public String home(Model model) {
