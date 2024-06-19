@@ -47,12 +47,14 @@ public class Pelicula implements Serializable{
 	@ManyToMany
 	private List<Actor> protagonistas; //1 Pelicula tiene muchos protagonistas/actores y a su vez esos actores pueden estar en muchas peliculas
 	
+	private String imagen; //campo que va a contener la imagen que subamos
+	
 	
 	public Pelicula() {
 		
-	}
-	
-	
+	}	
+
+
 	public Long getIdPelicula() {
 		return idPelicula;
 	}
@@ -82,6 +84,12 @@ public class Pelicula implements Serializable{
 	}
 	public void setProtagonistas(List<Actor> protagonistas) {
 		this.protagonistas = protagonistas;
+	}
+	public String getImagen() {
+		return imagen;
+	}
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
 	}
 
 

@@ -57,3 +57,17 @@ function eliminarActor(btn){
 	
 	$(node).remove();
 }
+
+function previsualizar(){
+	let reader = new FileReader();
+	
+	reader.readAsDataURL(document.getElementById("imagen").files[0]);
+	
+	reader.onload = function(e){
+		let vistaPrevia = document.getElementById("vista_previa");
+		
+		vistaPrevia.classList.remove("d-none");
+		vistaPrevia.style.backgroundImage = 'url("' + e.target.result + '")';
+	}
+	
+}
