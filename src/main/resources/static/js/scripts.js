@@ -58,7 +58,7 @@ function eliminarActor(btn) {
 	$(node).remove();
 }
 
-function previsualizar() {
+/*function previsualizar() {
 	let reader = new FileReader();
 
 	reader.readAsDataURL(document.getElementById("imagen").files[0]);
@@ -70,4 +70,18 @@ function previsualizar() {
 		vistaPrevia.style.backgroundImage = 'url("' + e.target.result + '")';
 	}
 
+}*/
+function previsualizar() {
+    let archivo = document.getElementById("archivo");
+    if (archivo.files.length > 0) {
+        let reader = new FileReader();
+        reader.readAsDataURL(archivo.files[0]);
+        reader.onload = function(e) {
+            let vistaPrevia = document.getElementById("vista_previa");
+            vistaPrevia.classList.remove("d-none");
+            vistaPrevia.style.backgroundImage = 'url("' + e.target.result + '")';
+        }
+    } else {
+        console.error("No se seleccionó ningún archivo.");
+    }
 }
