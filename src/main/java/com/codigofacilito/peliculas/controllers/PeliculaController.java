@@ -92,6 +92,8 @@ private IArchivoService iArchivoService;
 			} catch (IOException e) {				
 				e.printStackTrace();
 			} 
+		}else {
+			pelicula.setImagen("_default.jpg");
 		}
 		
 		//creamos lista de tipo Long de idsProtagonistas separados por comas
@@ -126,8 +128,8 @@ private IArchivoService iArchivoService;
 		
 		//header.html -> <div th:if="${msj != null}" th:text="${msj}" th:class="${tipoMsj != null ? 'alert alert-' + tipoMsj : 'alert'}">
 		//Al presionar Catálogo en navbar:
-		model.addAttribute("msj", "Catálogo actualizado a 2024");
-		model.addAttribute("tipoMsj", "success"); //success -> clase bootstrap
+		//model.addAttribute("msj", "Catálogo actualizado a 2024");
+		//model.addAttribute("tipoMsj", "success"); //success -> clase bootstrap
 		
 		return "home"; //Vista que devolverá -> templates-> home.html
 	}	
