@@ -84,7 +84,9 @@ private IArchivoService iArchivoService;
 		
 		//Para saber si recibimos una imagen
 		if(!imagen.isEmpty()) { //si no viene vacío, guardamos la imagen
-			String archivo = pelicula.getNombrePelicula() + getExtension(imagen.getOriginalFilename()); //y lo concatenamos con la extensión
+			String archivo = pelicula.getNombrePelicula() + getExtension(imagen.getOriginalFilename()); //obtenemos nombre del archivo y lo concatenamos con la extensión
+			pelicula.setImagen(archivo); //lo agregamos al objeto Pelicula
+			
 			try {
 				iArchivoService.guardar(archivo, imagen.getInputStream());
 			} catch (IOException e) {				
