@@ -57,23 +57,48 @@ private IArchivoService iArchivoService;
 	}
 	
 	
-	@GetMapping("/pelicula/{idPelicula}")
-	public String editar(@PathVariable(name = "idPelicula") Long id_pelicula, Model model) {
-		Pelicula pelicula = new Pelicula();
-		model.addAttribute("pelicula", pelicula);
+	@GetMapping("/pelicula/{id}") 
+	public String editar(@PathVariable(name = "id") Long id, Model model) { //En pelicula.html -> <input id="id" name="id" type="text" th:field="*{idPelicula}">
 		
-		model.addAttribute("titulo", "Editar Pelicula");
+		Pelicula pelicula = iPeliculaService.findByIdPelicula(id);
 		
-		model.addAttribute("generos", iGeneroService.findAllGeneros()); //Traemos los generos del service que inyectamos p/mostrarse en select del form(combo box)-> th:each="genero : ${generos}"
+		/*String ids = "";
+		for (Actor actor : pelicula.getProtagonistas()) {
+			if("".equals(ids)) {
+				ids = actor.getIdActor().toString();
+			}else {
+				ids = ids + "." + actor.getIdActor().toString();
+			}
+		}*/
 		
-		model.addAttribute("actores", iActorService.findAllActores()); //Traemos los actores del service que inyectamos p/mostrarse en
+		/*String ids = pelicula.getProtagonistas().stream()
+	                    .map(actor -> actor.getIdActor().toString())
+	                    .collect(Collectors.joining(","));*/
+	    
+	    //Obtener IDs de los actores asociados a la película
+		String ids = "";
+	    if (!pelicula.getProtagonistas().isEmpty()) {
+	        ids = pelicula.getProtagonistas().stream()
+	                    .map(actor -> actor.getIdActor().toString())
+	                    .collect(Collectors.joining(","));
+	    }
 		
-		return "pelicula"; //nombre de la vista que va a retornar este método-> templates-> pelicula.html
+		model.addAttribute("pelicula", pelicula); //<form th:action="@{/pelicula}" th:object="${pelicula}"...>
+		
+		model.addAttribute("ids", ids); //<input id="ids" name="ids" type="text" th:value="${ids}">
+		
+		model.addAttribute("titulo", "Editar Pelicula"); //<h2 th:text="${titulo}" class="py-4"></h2>
+		
+		model.addAttribute("generos", iGeneroService.findAllGeneros()); //Traemos los generos del service q inyectamos p/mostrarse en select del form(combo box)-> th:each="genero : ${generos}"
+		
+		model.addAttribute("actores", iActorService.findAllActores()); //Traemos los actores del service q inyectamos p/mostrarse en select del form -> <option th:each="actor : ${actores}"
+		
+		return "pelicula"; //nombre de la vista que va a retornar -> templates-> pelicula.html
 	}
 	
 	@PostMapping("/pelicula") //botón guardar del form
-	public String guardar(@Valid Pelicula pelicula, BindingResult br , @ModelAttribute(name = "ids") String ids, 
-			Model model, @RequestParam("archivo") MultipartFile imagen) {
+	public String guardar(@Valid Pelicula pelicula, BindingResult br , @ModelAttribute(name = "ids") String ids, //En pelicula.html -> <input id="ids" name="ids" type="text">
+			Model model, @RequestParam("archivo") MultipartFile imagen) { //<input type="file" id="archivo" name="archivo" onchange="previsualizar()">
 		
 		//Al momento de guardar preguntamos si el formulario tuvo algún error. Si hubo, enviamos nuevamente el form
 		if(br.hasErrors()) {
@@ -97,7 +122,7 @@ private IArchivoService iArchivoService;
 		}
 		
 		//creamos lista de tipo Long de idsProtagonistas separados por comas
-		if (!ids.isEmpty()) {
+		if (ids != null && !"".equals(ids)) {
 			List<Long> idsProtagonistas = 
 					Arrays.stream(ids.split(",")) //de esa lista de ids de tipo String, separame los ids por comas
 					.map(Long::parseLong) //a ese resultado lo mapeamos utilizando la clase Long y lo parseamos a Long
@@ -132,6 +157,18 @@ private IArchivoService iArchivoService;
 		//model.addAttribute("tipoMsj", "success"); //success -> clase bootstrap
 		
 		return "home"; //Vista que devolverá -> templates-> home.html
-	}	
+	}
+	
+	
+	@GetMapping({"/listado"}) 
+	public String listado(Model model) {
+		
+		model.addAttribute("titulo", "Listado de Películas" );	
+		
+		//Añadimos/traemos las peliculas
+		model.addAttribute("peliculas", iPeliculaService.findAllPeliculas());	
+		
+		return "listado"; //Vista que devolverá -> templates-> listado.html
+	}
 
 }

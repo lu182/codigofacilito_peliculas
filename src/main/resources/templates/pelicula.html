@@ -62,11 +62,13 @@
 				<div class="col-sm-10">
 					<input type="file" id="archivo" name="archivo" onchange="previsualizar()">
 					<div id="vista_previa" class="d-none">
-						
+
 					</div>
 				</div>
 			</div>
-			<input id="ids" name="ids" type="hidden">
+			<input id="ids" name="ids" type="text" th:value="${ids}"> <!--ids de protagonistas-->			
+			<input id="id" name="id" type="text" th:field="*{idPelicula}"> <!--id de pelicula-->
+			<input id="imagen" name="imagen" type="text" th:field="*{imagen}"> <!--nombre de imagen-->
 			<div id="protagonistas_container" class="row">
 
 			</div>
@@ -74,5 +76,33 @@
 		</form>
 	</div>
 </body>
+<script>
+	/*$(function(){
+		let ids = $("#ids").val();
+		let arr = ids.split(",");
+		$("#ids").val("");
+		
+		arr.forEach(id => {
+			$("#protagonistas").val(id);
+			actorSelected($("#protagonistas")[0]);
+		})
+	})*/
+	$(function () {
+
+		//Limpiar el campo de IDs antes de asignar nuevos valores
+		$("#ids").val("");
+		
+		let ids = $("#ids").val();
+		let arr = ids.split(",");
+
+		arr.forEach(id => {
+			$("#protagonistas").val(id);
+			let selectElement = $("#protagonistas")[0];
+			if (selectElement.selectedIndex !== -1) {
+				actorSelected(selectElement);
+			}
+		});
+	});	
+</script>
 
 </html>
