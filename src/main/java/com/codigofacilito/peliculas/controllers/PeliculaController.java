@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -148,15 +150,29 @@ private IArchivoService iArchivoService;
 	
 	
 	@GetMapping({"/", "/home", "/index"}) //Estas 3 opciones nos van a mandar a nuestro home.html donde estará el Catálogo
-	public String home(Model model) {
+	public String home(Model model, @RequestParam(name = "pagina", required = false, defaultValue = "0") Integer pagina) {
 		
-		//Añadimos/traemos las peliculas
-		model.addAttribute("peliculas", iPeliculaService.findAllPeliculas());
+		PageRequest pr = PageRequest.of(pagina, 4); //cantidad de elementos a mostrar por pagina
+		Page<Pelicula> page = iPeliculaService.findAllPeliculas(pr);
+		
+		//Agregamos las peliculas basandonos en el contenido del paginador		
+		model.addAttribute("peliculas", page.getContent()); //devuelve el listado de peliculas
+		
+		//P/saber cuantas paginas tenemos y armarmamos un array de enteros p/las paginas
+		if(page.getTotalPages() > 0) {
+			List<Integer> paginas = IntStream.rangeClosed(1, page.getTotalPages()).boxed().toList();
+			model.addAttribute("paginas", paginas); //mostramos las paginas
+		}		
+		//P/saber donde estamos parados
+		model.addAttribute("actual", pagina + 1); //xq el indce de las paginas empieza en 0
+		
 		
 		//header.html -> <div th:if="${msj != null}" th:text="${msj}" th:class="${tipoMsj != null ? 'alert alert-' + tipoMsj : 'alert'}">
 		//Al presionar Catálogo en navbar:
 		//model.addAttribute("msj", "Catálogo actualizado a 2024");
 		//model.addAttribute("tipoMsj", "success"); //success -> clase bootstrap
+		
+		model.addAttribute("titulo", "Catálogo de peliculas");
 		
 		return "home"; //Vista que devolverá -> templates-> home.html
 	}
@@ -179,7 +195,7 @@ private IArchivoService iArchivoService;
 		return "listado"; //Vista que devolverá -> templates-> listado.html
 	}
 	
-	
+	//TODO: DeleteMapping
 	@GetMapping("/pelicula/{id}/delete") 
 	public String eliminar(@PathVariable(name = "id") Long id, Model model, RedirectAttributes redirectAtt) { 
 		
