@@ -15,7 +15,7 @@
 				<tr>
 					<th scope="col">Nombre</th>
 					<th scope="col">Género</th>
-					<th scope="col">Acciones</th>					
+					<th scope="col">Acciones</th>
 				</tr>
 			</thead>
 			<tbody class="table-group-divider">
@@ -24,9 +24,15 @@
 					<td th:text="${pelicula.generoPelicula.nombreGenero}"></td>
 					<td>
 						<a th:href="@{'/pelicula/' + ${pelicula.idPelicula}}">Editar</a>
-						<a th:href="@{'/pelicula/' + ${pelicula.idPelicula + '/delete'}}" class="text-danger">Eliminar</a>
+						<!--<a th:href="@{'/pelicula/' + ${pelicula.idPelicula + '/delete'}}" class="text-danger">Eliminar</a> -->
+						<form th:action="@{'/pelicula/' + ${pelicula.idPelicula} + '/delete'}" method="post"
+							class="d-inline">
+							<input type="hidden" name="_method" value="delete" />
+							<button type="submit" class="btn btn-link text-danger"
+								onclick="return confirm('¿Estás seguro que deseas eliminar esta película?')">Eliminar</button>
+						</form>
 					</td>>
-				</tr>				
+				</tr>
 			</tbody>
 		</table>
 	</div>

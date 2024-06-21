@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -195,8 +196,8 @@ private IArchivoService iArchivoService;
 		return "listado"; //Vista que devolverá -> templates-> listado.html
 	}
 	
-	//TODO: DeleteMapping
-	@GetMapping("/pelicula/{id}/delete") 
+	
+	@DeleteMapping("/pelicula/{id}/delete") 
 	public String eliminar(@PathVariable(name = "id") Long id, Model model, RedirectAttributes redirectAtt) { 
 		
 		iPeliculaService.delete(id);
