@@ -152,7 +152,7 @@ private IArchivoService iArchivoService;
 	@GetMapping({"/", "/home", "/index"}) //Estas 3 opciones nos van a mandar a nuestro home.html donde estará el Catálogo
 	public String home(Model model, @RequestParam(name = "pagina", required = false, defaultValue = "0") Integer pagina) {
 		
-		PageRequest pr = PageRequest.of(pagina, 4); //cantidad de elementos a mostrar por pagina
+		PageRequest pr = PageRequest.of(pagina, 12); //cantidad de elementos a mostrar por pagina
 		Page<Pelicula> page = iPeliculaService.findAllPeliculas(pr);
 		
 		//Agregamos las peliculas basandonos en el contenido del paginador		

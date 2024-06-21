@@ -11,7 +11,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -41,7 +43,9 @@ public class Pelicula implements Serializable{
 	private Date fechaEstreno;		
 	
 	@NotNull()
-	@OneToOne //1 Pelicula va a tener 1 Género
+	//@OneToOne //1 Pelicula va a tener 1 Género
+	@ManyToOne
+    @JoinColumn(name = "genero_pelicula_id") // nombre de la columna en la tabla peliculas que referencia al género
 	private Genero generoPelicula;
 	
 	@ManyToMany
