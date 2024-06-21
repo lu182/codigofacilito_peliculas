@@ -24,6 +24,7 @@
 					<td th:text="${pelicula.generoPelicula.nombreGenero}"></td>
 					<td>
 						<a th:href="@{'/pelicula/' + ${pelicula.idPelicula}}">Editar</a>
+						<a th:href="@{'/pelicula/' + ${pelicula.idPelicula + '/delete'}}" class="text-danger">Eliminar</a>
 					</td>>
 				</tr>				
 			</tbody>

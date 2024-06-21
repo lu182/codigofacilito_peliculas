@@ -8,12 +8,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.codigofacilito.peliculas.entities.Actor;
 import com.codigofacilito.peliculas.entities.Pelicula;
@@ -161,14 +163,32 @@ private IArchivoService iArchivoService;
 	
 	
 	@GetMapping({"/listado"}) 
-	public String listado(Model model) {
+	public String listado(Model model, @RequestParam(required = false) String msj,  @RequestParam(required = false) String tipoMsj) {
 		
 		model.addAttribute("titulo", "Listado de Películas" );	
 		
 		//Añadimos/traemos las peliculas
 		model.addAttribute("peliculas", iPeliculaService.findAllPeliculas());	
 		
+		if(!"".equals(tipoMsj) && !"".equals(msj)) { //si no están vacíos, los agregamos al model
+			model.addAttribute("msj", msj);
+			model.addAttribute("tipoMsj", tipoMsj);
+			
+		}
+		
 		return "listado"; //Vista que devolverá -> templates-> listado.html
+	}
+	
+	
+	@GetMapping("/pelicula/{id}/delete") 
+	public String eliminar(@PathVariable(name = "id") Long id, Model model, RedirectAttributes redirectAtt) { 
+		
+		iPeliculaService.delete(id);
+		
+		redirectAtt.addAttribute("msj", "La pelicula fue eliminada correctamente");
+		redirectAtt.addAttribute("tipoMsj", "success");
+		
+		return "redirect:/listado"; 
 	}
 
 }
