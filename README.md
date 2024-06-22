@@ -11,7 +11,7 @@
 
 Aplicación desarrollada en la feria de cursos gratis que lanzó Código Facilito, que nos permite realizar operaciones CRUD y subir imagenes de peliculas. 
 Proyecto basado en un modelo de arquitectura MVC (Modelo-Vista-Controlador). 
-Las tecnologías/herramientas/librerías implementadas fueron: Java 17, Spring Boot, Maven, Hibernate, JPA y H2 para la base de datos.
+Las tecnologías/herramientas/librerías implementadas fueron: Java 17, Spring Boot, Thymeleaf, HTML5, CSS3, Bootstrap, Js Vanilla, JQuery, Maven, Hibernate, JPA y H2 para la base de datos.
 
 
 ## Instalación y uso
